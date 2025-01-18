@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/profile.css' %}" />
+</head>
+<body>
+<div class="profile-container">
+    <div class="profile-header">
+        <img src="https://via.placeholder.com/150" alt="Default User Image" class="profile-image">
+        <h2>Welcome, {{ profile.user_name }}</h2>
+    </div>
+    <div class="profile-details">
+        <p><strong>User ID:</strong> {{ profile.user_id }}</p>
+        <p><strong>Email:</strong> {{ profile.email }}</p>
+        <p><strong>Broker:</strong> {{ profile.broker }}</p>
+    </div>
+</div>
+</body>
+</html>

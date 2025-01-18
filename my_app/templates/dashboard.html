@@ -1,0 +1,289 @@
+<!--<h2>Welcome, {{ profile.user_name }}</h2>-->
+<!--<p>User ID: {{ profile.user_id }}</p>-->
+<!--<p>Email: {{ profile.email }}</p>-->
+<!--<p>Broker: {{ profile.broker }}</p>-->
+
+<!--<h3>Historical Data Chart</h3>-->
+<!--<form id="chartFilter">-->
+<!--    <label>Symbol:</label>-->
+<!--    <input type="text" id="symbol" required>-->
+<!--    <label>From Date:</label>-->
+<!--    <input type="date" id="fromDate" required>-->
+<!--    <label>To Date:</label>-->
+<!--    <input type="date" id="toDate" required>-->
+<!--    <button type="submit">Filter</button>-->
+<!--</form>-->
+
+<!--<canvas id="chart"></canvas>-->
+
+<!--<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>-->
+<!--<script>-->
+<!--    document.getElementById('chartFilter').addEventListener('submit', async (e) => {-->
+<!--        e.preventDefault();-->
+<!--        const symbol = document.getElementById('symbol').value;-->
+<!--        const fromDate = document.getElementById('fromDate').value;-->
+<!--        const toDate = document.getElementById('toDate').value;-->
+
+<!--        const response = await fetch(`/api/historical-data/?symbol=${symbol}&from_date=${fromDate}&to_date=${toDate}`);-->
+<!--        const data = await response.json();-->
+<!--        console.log(data)-->
+<!--        const labels = data.map(item => item.date);-->
+<!--        const prices = data.map(item => item.price);-->
+<!--        console.log(labels, prices)-->
+<!--        let chartStatus = Chart.getChart("chart"); // <canvas> id-->
+<!--        if (chartStatus != undefined) {-->
+<!--          chartStatus.destroy();-->
+<!--        }-->
+<!--        new Chart(document.getElementById('chart'), {-->
+<!--            type: 'line',-->
+<!--            data: {-->
+<!--                labels,-->
+<!--                datasets: [{ label: 'Price', data: prices }]-->
+<!--            }-->
+<!--        });-->
+<!--    });-->
+<!--</script>-->
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/dashboard.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}" />
+
+  <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/chart.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/popper.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/slim.min.js' %}"></script>
+</head>
+<body>
+  <div class="sidebar">
+    <h4 class="text-center">Dashboard</h4>
+    <ul class="nav flex-column">
+      <li class="nav-item">
+        <a class="nav-link" href="#" id="home-tab">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#" id="profile-tab">Profile</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#" id="holding-tab">Holdings</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Place Order</a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="content">
+      <nav class="navbar navbar-expand-lg navbar-light">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="/">Sign out</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    <!-- Profile Section -->
+    <div id="profile-section" style="display: none; padding: 2%;">
+      <div style="display: flex; align-items: center; gap: 20px;">
+        <div>
+          <h2 style="margin: 0;">Welcome, {{ profile.user_name }}</h2>
+          <p style="margin: 5px 0;">User ID: <strong>{{ profile.user_id }}</strong></p>
+          <p style="margin: 5px 0;">Email: <strong>{{ profile.email }}</strong></p>
+          <p style="margin: 5px 0;">Broker: <strong>{{ profile.broker }}</strong></p>
+          <p style="margin: 5px 0;">User Type: <strong>Individual</strong></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Holding data -->
+    <div id="holding-section" style="display: none; padding: 2%;">
+      <h2 style="">User Holdings</h2>
+      <div style="display: flex; align-items: center; gap: 20px;">
+        <table border="0" style="width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 16px; text-align: left; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+        <thead style="background-color: #007bff; color: white;">
+          <tr>
+            <th style="padding: 10px;">Trading Symbol</th>
+            <th style="padding: 10px;">Exchange</th>
+            <th style="padding: 10px;">ISIN</th>
+            <th style="padding: 10px;">Quantity</th>
+            <th style="padding: 10px;">Authorised Date</th>
+            <th style="padding: 10px;">Average Price</th>
+            <th style="padding: 10px;">Last Price</th>
+            <th style="padding: 10px;">Close Price</th>
+            <th style="padding: 10px;">PnL</th>
+            <th style="padding: 10px;">Day Change</th>
+            <th style="padding: 10px;">Day Change Percentage</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for holding in holding_data %}
+          <tr style="border-bottom: 1px solid #ddd; background-color: {% cycle '#f9f9f9' '#ffffff' %};">
+            <td style="padding: 10px;">{{ holding.tradingsymbol }}</td>
+            <td style="padding: 10px;">{{ holding.exchange }}</td>
+            <td style="padding: 10px;">{{ holding.isin }}</td>
+            <td style="padding: 10px;">{{ holding.quantity }}</td>
+            <td style="padding: 10px;">{{ holding.authorised_date }}</td>
+            <td style="padding: 10px;">{{ holding.average_price }}</td>
+            <td style="padding: 10px;">{{ holding.last_price }}</td>
+            <td style="padding: 10px;">{{ holding.close_price }}</td>
+            <td style="padding: 10px; color: {% if holding.pnl < 0 %}red{% else %}green{% endif %};">
+              {{ holding.pnl }}
+            </td>
+            <td style="padding: 10px;">{{ holding.day_change }}</td>
+            <td style="padding: 10px; color: {% if holding.day_change_percentage < 0 %}red{% else %}green{% endif %};">
+              {{ holding.day_change_percentage }}%
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      </div>
+      <div class="container mt-5">
+        <!-- Card to display total Profit/Loss -->
+        <div class="card text-center">
+          <div class="card-header">
+            <h4>Total Profit/Loss</h4>
+          </div>
+          <div class="card-body">
+            <h2 id="totalProfitLoss">Loading...</h2>  <!-- Placeholder for Total Profit/Loss -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Historical Data Section -->
+    <div id="home-section" style="display: block;">
+      <h2 style="padding-left: 2%;">Historical Data Chart</h2>
+      <div class="col" style="padding-top: 2%">
+        <div class="row" style="padding-left: 2%">
+          <form id="chartFilter" class="form-inline">
+            <label for="symbol">Symbol:</label>
+            <input type="text" id="symbol" placeholder="Symbol" required>
+            <label for="fromDate">From Date:</label>
+            <input type="date" id="fromDate" required>
+            <label for="toDate">To Date:</label>
+            <input type="date" id="toDate" required>
+            <button type="submit" class="btn-submit">Filter</button>
+          </form>
+        </div>
+        <div class="row">
+          <canvas id="chart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
+<script>
+    // Select all section divs and links
+    let chart = new Chart(document.getElementById('chart'), {
+        type: 'line',
+        data: {
+            labels: ['No Data'],
+            datasets: [{
+                label: 'Price',
+                data: [],
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top'
+                }
+            },
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Date'
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Price'
+                    },
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    // Event listener for "Filter" form
+    document.getElementById('chartFilter').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const symbol = document.getElementById('symbol').value;
+        const fromDate = document.getElementById('fromDate').value;
+        const toDate = document.getElementById('toDate').value;
+
+        const response = await fetch(`/api/historical-data/?symbol=${symbol}&from_date=${fromDate}&to_date=${toDate}`);
+        const data = await response.json();
+
+        const labels = data.map(item => item.date);
+        const prices = data.map(item => item.price);
+
+        chart.data.labels = labels.length > 0 ? labels : ['No Data'];
+        chart.data.datasets[0].data = prices.length > 0 ? prices : [];
+        chart.update();
+    });
+
+    // Toggle between Home and Profile sections
+    document.getElementById('home-tab').addEventListener('click', () => {
+        document.getElementById('home-section').style.display = 'block';
+        document.getElementById('holding-section').style.display = 'none';
+        document.getElementById('profile-section').style.display = 'none';
+    });
+
+    document.getElementById('profile-tab').addEventListener('click', () => {
+        document.getElementById('home-section').style.display = 'none';
+        document.getElementById('holding-section').style.display = 'none';
+        document.getElementById('profile-section').style.display = 'block';
+    });
+
+    document.getElementById('holding-tab').addEventListener('click', () => {
+        document.getElementById('home-section').style.display = 'none';
+        document.getElementById('holding-section').style.display = 'block';
+        document.getElementById('profile-section').style.display = 'none';
+    });
+
+    const holdings_data = {{ holding_data|safe }};
+    console.log(holdings_data); // Check the data in browser console
+
+    // Function to calculate total Profit/Loss
+    // Function to calculate total Profit/Loss
+    function calculateTotalPnL(holdings) {
+      let totalPnL = 0;
+      holdings.forEach(holding => {
+        // Ensure the pnl is treated as a number
+        totalPnL += parseFloat(holding.pnl);  // Use parseFloat to ensure it's a number
+      });
+      return totalPnL;
+    }
+
+    // Calculate and display total Profit/Loss
+    const totalProfitLoss = calculateTotalPnL(holdings_data);
+    console.log('Total Profit/Loss:', totalProfitLoss);  // Check the value in console
+
+    // Check if totalProfitLoss is a valid number
+    if (!isNaN(totalProfitLoss)) {
+      document.getElementById("totalProfitLoss").textContent = `$${totalProfitLoss.toFixed(2)}`;
+    } else {
+      console.error('Total Profit/Loss is not a valid number');
+      document.getElementById("totalProfitLoss").textContent = 'Invalid Data';
+    }
+
+
+</script>

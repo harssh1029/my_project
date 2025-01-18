@@ -1,0 +1,116 @@
+body {
+      padding-top: 20px;
+    }
+.sidebar {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 100;
+  height: 100%;
+  width: 250px;
+  background-color: #f8f9fa;
+  padding-top: 20px;
+}
+.sidebar .nav-link {
+  padding: 10px 15px;
+}
+.content {
+  margin-left: 250px;
+  padding: 20px;
+}
+
+
+/* Form inline styling */
+.form-inline {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between form elements */
+    background: #ffffff;
+    padding: 10px 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Labels */
+.form-inline label {
+    font-weight: bold;
+    color: #333333;
+    margin-right: 5px;
+}
+
+/* Inputs */
+.form-inline input[type="text"],
+.form-inline input[type="date"] {
+    padding: 8px;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #333;
+    width: 120px; /* Adjust as needed for a consistent width */
+}
+
+/* Button styling */
+.btn-submit {
+    background: #4caf50;
+    color: white;
+    padding: 10px 15px;
+    font-size: 14px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-submit:hover {
+    background: #45a049;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .form-inline {
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .form-inline input[type="text"],
+    .form-inline input[type="date"] {
+        width: 100%;
+    }
+
+    .btn-submit {
+        width: 100%;
+    }
+}
+#profile-section {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#profile-section h2 {
+  color: #333;
+}
+
+#profile-section p {
+  color: #555;
+}
+
+#profile-section button {
+  transition: background-color 0.3s;
+}
+
+#profile-section button:hover {
+  background-color: #0056b3;
+}
+
+#profile-section button:nth-child(2):hover {
+  background-color: #c82333;
+}
+table tbody tr:hover {
+  background-color: #f1f1f1;
+}
