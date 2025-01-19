@@ -494,7 +494,7 @@
 
     function liveData() {
       const stockList = document.getElementById("stocks-list");
-      const socket = new WebSocket('ws://127.0.0.1:8001/ws/stocks/');
+      const socket = new WebSocket('ws://54.196.221.193/ws/stocks/');
 
       // When WebSocket is opened
       socket.onopen = function(e) {
