@@ -53,7 +53,7 @@ body {
 
 /* Button styling */
 .btn-submit {
-    background: #4caf50;
+    background: #0D63A5;
     color: white;
     padding: 10px 15px;
     font-size: 14px;
@@ -65,7 +65,7 @@ body {
 }
 
 .btn-submit:hover {
-    background: #45a049;
+    background: #000B58;
 }
 
 /* Responsive adjustments */
@@ -164,7 +164,7 @@ table tbody tr:hover {
   }
 
   #stocks-table th {
-    background-color: #4CAF50;
+    background-color: #0D63A5;
     color: white;
     font-weight: bold;
   }
@@ -263,80 +263,136 @@ table tbody tr:hover {
     }
   }
 
-  #profile-section > div {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
 
-  #profile-section > div:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-  }
-
-  #profile-section p {
-    font-size: 16px;
-    line-height: 1.6;
-    color: #444;
-  }
-
-  #profile-section h2 {
-    font-family: 'Arial', sans-serif;
-    color: #444;
-  }
-
-  #profile-section strong {
-    color: #222;
-  }
-
-/* Profile Section Container */
+/* General container styling */
 .profile-container {
-  display: flex;
-  padding: 2%;
-  justify-content: center;
+  width: 70%;
+  margin: 40px auto;
+  padding: 30px;
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  font-family: 'Arial', sans-serif;
 }
 
-/* Profile Card Styling */
+/* Card styling */
 .profile-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  max-width: 500px;
-  margin: auto;
-  padding: 20px;
-  background-color: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s, box-shadow 0.3s;
+  width: 100%;
 }
 
-/* Profile Header Styling */
 .profile-header {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 
 .profile-header h2 {
-  margin: 0;
   font-size: 24px;
+  font-weight: bold;
   color: #333;
+  border-bottom: 2px solid #ddd;
+  display: inline-block;
+  padding-bottom: 5px;
 }
 
-/* Divider Line */
-.profile-divider {
-  width: 100%;
-  border-top: 1px solid #ddd;
-  margin-bottom: 10px;
-}
-
-/* Profile Content Styling */
+/* Content layout */
 .profile-content {
-  text-align: left;
-  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  row-gap: 20px;
 }
 
-.profile-content p {
-  margin: 10px 0;
+.profile-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 48%; /* Each item takes 48% for a two-column layout */
+  padding: 10px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+/* Label and Value */
+.profile-label {
   font-size: 16px;
+  font-weight: bold;
   color: #555;
 }
 
+.profile-value {
+  font-size: 16px;
+  color: #222;
+  word-break: break-word;
+  text-align: right;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .profile-container {
+    width: 90%;
+    padding: 20px;
+  }
+
+  .profile-content {
+    flex-direction: column;
+  }
+
+  .profile-row {
+    width: 100%; /* Single column for smaller screens */
+    margin-bottom: 15px;
+  }
+}
+.display-none {
+    display: none;
+    padding: 2%;
+}
+.stock-table-style {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+.stock-table-tr {
+    background-color: #4CAF50; color: white; text-align: left;
+}
+.holding-data-table-ui {
+    width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 16px; text-align: left; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.holding-data-thead {
+    background-color: #0D63A5; color: white;
+}
+.holding-data-div {
+    display: flex; align-items: center; gap: 20px;
+}
+.holding-data-tr {
+    border-bottom: 1px solid #ddd; background-color: {% cycle '#f9f9f9' '#ffffff' %};
+}
+.form-order-input {
+    padding: 10px; border-radius: 5px; border: 1px solid #ddd; font-size: 14px;
+}
+.place-order-button {
+    padding: 12px; background-color: #0D63A5; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer;
+}
+.place-order-form {
+    display: flex; flex-direction: column; gap: 20px; max-width: 400px; margin: 0 auto;
+}
+.place-order-success {
+    display: none; margin-top: 20px; color: green; background-color: #d4edda; padding: 10px; border-radius: 5px; text-align: center;
+}
+.order-history-heading {
+    text-align: center; margin-top: 40px; color: #333;
+}
+.order-history-table {
+    width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 16px; text-align: left; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border-radius: 8px; overflow: hidden;
+}
+.order-history-thead {
+    background: #0D63A5; color: white; font-weight: bold;
+}
+.order-history-th {
+    padding: 14px; text-align: left; text-transform: uppercase; letter-spacing: 1px;
+}
+.padding-ten {
+    padding: 10px;
+}

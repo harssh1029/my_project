@@ -51,56 +51,76 @@
         </div>
       </nav>
     <!-- Profile Section -->
-    <div id="profile-section" style="display: none;" class="profile-container">
+    <div id="profile-section" class="profile-container display-none">
       <div class="profile-card">
-        <div class="profile-header">
-          <h2>Profile Information</h2>
+      <div class="profile-header">
+        <h2>Profile Information</h2>
+      </div>
+      <div class="profile-content">
+        <div class="profile-row">
+          <span class="profile-label">User Name:</span>
+          <span class="profile-value">{{ profile.user_name }}</span>
         </div>
-        <div class="profile-divider"></div>
-        <div class="profile-content">
-          <p>User name: <strong>{{ profile.user_name }}</strong></p>
-          <p>User ID: <strong>{{ profile.user_id }}</strong></p>
-          <p>Email: <strong>{{ profile.email }}</strong></p>
-          <p>Mobile: <strong>{{ profile.mobile }}</strong></p>
-          <p>Date of Birth: <strong>{{ profile.date_of_birth }}</strong></p>
-          <p>Broker: <strong>{{ profile.broker }}</strong></p>
-          <p>User Type: <strong>Individual</strong></p>
+        <div class="profile-row">
+          <span class="profile-label">User ID:</span>
+          <span class="profile-value">{{ profile.user_id }}</span>
+        </div>
+        <div class="profile-row">
+          <span class="profile-label">Email:</span>
+          <span class="profile-value">{{ profile.email }}</span>
+        </div>
+        <div class="profile-row">
+          <span class="profile-label">Mobile:</span>
+          <span class="profile-value">{{ profile.mobile }}</span>
+        </div>
+        <div class="profile-row">
+          <span class="profile-label">Date of Birth:</span>
+          <span class="profile-value">{{ profile.date_of_birth }}</span>
+        </div>
+        <div class="profile-row">
+          <span class="profile-label">Broker:</span>
+          <span class="profile-value">{{ profile.broker }}</span>
+        </div>
+        <div class="profile-row">
+          <span class="profile-label">User Type:</span>
+          <span class="profile-value">Individual</span>
         </div>
       </div>
+    </div>
     </div>
 
 
 
 
     <!-- Place Order Section -->
-    <div id="place-order-section" style="display: none;padding: 2%; font-family: Arial, sans-serif;">
+    <div id="place-order-section" class="display-none">
         <h2 style="text-align: center; color: #333;">Place Order</h2>
 
         <!-- Form for order submission -->
-        <form id="place-order-form" style="display: flex; flex-direction: column; gap: 20px; max-width: 400px; margin: 0 auto;">
+        <form id="place-order-form" class="place-order-form">
             {% csrf_token %}
-            <input type="text" id="tradingsymbol" placeholder="Trading Symbol" required style="padding: 10px; border-radius: 5px; border: 1px solid #ddd; font-size: 14px;" />
-            <input type="number" id="price" placeholder="Price" required style="padding: 10px; border-radius: 5px; border: 1px solid #ddd; font-size: 14px;" />
-            <input type="number" id="quantity" placeholder="Quantity" required style="padding: 10px; border-radius: 5px; border: 1px solid #ddd; font-size: 14px;" />
-            <button type="submit" class="btn-submit" style="padding: 12px; background-color: #007bff; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer;">
+            <input class="form-order-input" type="text" id="tradingsymbol" placeholder="Trading Symbol" required />
+            <input class="form-order-input" type="number" id="price" placeholder="Price" required />
+            <input class="form-order-input" type="number" id="quantity" placeholder="Quantity" required />
+            <button class="place-order-button" type="submit" class="btn-submit" style="">
                 Place Order
             </button>
         </form>
 
         <!-- Success message alert -->
-        <div id="order-success-message" style="display: none; margin-top: 20px; color: green; background-color: #d4edda; padding: 10px; border-radius: 5px; text-align: center;">
+        <div id="order-success-message" class="place-order-success">
             Order placed successfully!
         </div>
 
         <!-- Order History Table -->
-        <h3 style="text-align: center; margin-top: 40px; color: #333;">Order History</h3>
-        <table id="order-history-table" border="0" style="width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 16px; text-align: left; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border-radius: 8px; overflow: hidden;">
-          <thead style="background: linear-gradient(to right, #007bff, #0056b3); color: white; font-weight: bold;">
+        <h3 class="order-history-heading" >Order History</h3>
+        <table class="order-history-table" id="order-history-table" border="0">
+          <thead class="order-history-thead">
               <tr>
-                  <th style="padding: 14px; text-align: left; text-transform: uppercase; letter-spacing: 1px;">Trading Symbol</th>
-                  <th style="padding: 14px; text-align: left; text-transform: uppercase; letter-spacing: 1px;">Price</th>
-                  <th style="padding: 14px; text-align: left; text-transform: uppercase; letter-spacing: 1px;">Quantity</th>
-                  <th style="padding: 14px; text-align: left; text-transform: uppercase; letter-spacing: 1px;">Status</th>
+                  <th class="order-history-th">Trading Symbol</th>
+                  <th class="order-history-th">Price</th>
+                  <th class="order-history-th">Quantity</th>
+                  <th class="order-history-th">Status</th>
               </tr>
           </thead>
           <tbody id="order-history-body">
@@ -111,40 +131,40 @@
 
 
     <!-- Holding data -->
-    <div id="holding-section" style="display: none; padding: 2%;">
+    <div id="holding-section" class="display-none">
       <h2 style="">User Holdings</h2>
-      <div style="display: flex; align-items: center; gap: 20px;">
-        <table border="0" style="width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 16px; text-align: left; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-        <thead style="background-color: #007bff; color: white;">
+      <div class="holding-data-div">
+        <table class="holding-data-table-ui" border="0" style="">
+        <thead class="holding-data-thead" style="">
           <tr>
-            <th style="padding: 10px;">Trading Symbol</th>
-            <th style="padding: 10px;">Exchange</th>
-            <th style="padding: 10px;">ISIN</th>
-            <th style="padding: 10px;">Quantity</th>
-            <th style="padding: 10px;">Authorised Date</th>
-            <th style="padding: 10px;">Average Price</th>
-            <th style="padding: 10px;">Last Price</th>
-            <th style="padding: 10px;">Close Price</th>
-            <th style="padding: 10px;">PnL</th>
-            <th style="padding: 10px;">Day Change</th>
-            <th style="padding: 10px;">Day Change Percentage</th>
+            <th class="padding-ten" style="padding: 10px;">Trading Symbol</th>
+            <th class="padding-ten">Exchange</th>
+            <th class="padding-ten">ISIN</th>
+            <th class="padding-ten">Quantity</th>
+            <th class="padding-ten">Authorised Date</th>
+            <th class="padding-ten">Average Price</th>
+            <th class="padding-ten">Last Price</th>
+            <th class="padding-ten">Close Price</th>
+            <th class="padding-ten">PnL</th>
+            <th class="padding-ten">Day Change</th>
+            <th class="padding-ten">Day Change Percentage</th>
           </tr>
         </thead>
         <tbody>
           {% for holding in holding_data %}
-          <tr style="border-bottom: 1px solid #ddd; background-color: {% cycle '#f9f9f9' '#ffffff' %};">
-            <td style="padding: 10px;">{{ holding.tradingsymbol }}</td>
-            <td style="padding: 10px;">{{ holding.exchange }}</td>
-            <td style="padding: 10px;">{{ holding.isin }}</td>
-            <td style="padding: 10px;">{{ holding.quantity }}</td>
-            <td style="padding: 10px;">{{ holding.authorised_date }}</td>
-            <td style="padding: 10px;">{{ holding.average_price }}</td>
-            <td style="padding: 10px;">{{ holding.last_price }}</td>
-            <td style="padding: 10px;">{{ holding.close_price }}</td>
+          <tr class="holding-data-tr">
+            <td class="padding-ten">{{ holding.tradingsymbol }}</td>
+            <td class="padding-ten">{{ holding.exchange }}</td>
+            <td class="padding-ten">{{ holding.isin }}</td>
+            <td class="padding-ten">{{ holding.quantity }}</td>
+            <td class="padding-ten">{{ holding.authorised_date }}</td>
+            <td class="padding-ten">{{ holding.average_price }}</td>
+            <td class="padding-ten">{{ holding.last_price }}</td>
+            <td class="padding-ten">{{ holding.close_price }}</td>
             <td style="padding: 10px; color: {% if holding.pnl < 0 %}red{% else %}green{% endif %};">
               {{ holding.pnl }}
             </td>
-            <td style="padding: 10px;">{{ holding.day_change }}</td>
+            <td class="padding-ten">{{ holding.day_change }}</td>
             <td style="padding: 10px; color: {% if holding.day_change_percentage < 0 %}red{% else %}green{% endif %};">
               {{ holding.day_change_percentage }}%
             </td>
@@ -188,11 +208,11 @@
     </div>
 
     <!-- Websocket Connection Data -->
-    <div id="websocket-data-section" style="display: none; padding: 20px;">
+    <div id="websocket-data-section" class="display-none">
       <h2 style="text-align: center;">Live Stock Price Feed</h2>
-      <table id="stocks-table" style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+      <table id="stocks-table" class="stock-table-style">
         <thead>
-          <tr style="background-color: #4CAF50; color: white; text-align: left;">
+          <tr class="stock-table-tr">
             <th style="padding: 10px;">Stock Symbol</th>
             <th style="padding: 10px;">Price</th>
           </tr>
@@ -338,7 +358,7 @@
         document.getElementById('place-order-section').style.display = 'none';
         document.getElementById('holding-section').style.display = 'none';
         document.getElementById('profile-section').style.display = 'none';
-        liveData();
+<!--        liveData();-->
     });
 
     const holdings_data = {{ holding_data|safe }};
@@ -523,5 +543,5 @@
         });
     }
 
-
+    liveData();
 </script>

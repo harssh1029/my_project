@@ -8,7 +8,7 @@ from django.views.decorators.csrf import csrf_exempt
 from .models import User, Order
 import json
 
-# Function to load data from the uploaded historical file
+
 def load_historical_data(request):
     try:
         file_path = "my_app/historical_prices.csv"  # Replace with actual file path
@@ -25,7 +25,7 @@ def load_historical_data(request):
     except Exception as e:
         s = str(e)
 
-# Registration View
+
 def register(request):
     if request.method == 'POST':
         user_name = request.POST['username']
@@ -51,7 +51,7 @@ def register(request):
 
     return render(request, 'register.html')
 
-# Login View
+
 def login(request):
     if request.method == 'POST':
         email = request.POST['email']
@@ -67,7 +67,7 @@ def login(request):
 
     return render(request, 'login.html')
 
-# Dashboard View
+
 def dashboard(request):
     user_id = request.session.get('user_id')
     if not user_id:
@@ -104,15 +104,7 @@ def dashboard(request):
     ]
     return render(request, 'dashboard.html', {'profile': user, 'holding_data': holding_data})
 
-def profile(request):
-    user_id = request.session.get('user_id')
-    if not user_id:
-        return redirect('login')
 
-    user = User.objects.get(user_id=user_id)
-    return render(request, 'profile.html', {'profile': user})
-
-# API to fetch historical data
 def get_historical_data(request):
     symbol = request.GET.get('symbol')
     from_date = request.GET.get('from_date')
@@ -125,6 +117,7 @@ def get_historical_data(request):
 
     return JsonResponse(list(data), safe=False)
 
+
 @csrf_exempt
 def place_order(request):
     if request.method == "POST":
@@ -132,9 +125,7 @@ def place_order(request):
         tradingsymbol = data.get("tradingsymbol")
         price = data.get("price")
         quantity = data.get("quantity")
-        # user = request.user  # Assuming user is authenticated
-        # Get the user_id from session
-        user_id = request.session.get('user_id')  # Assuming the user_id is stored in session
+        user_id = request.session.get('user_id')
 
         # Fetch the User object based on user_id
         user = get_object_or_404(User, user_id=user_id)
@@ -147,7 +138,7 @@ def place_order(request):
             tradingsymbol=tradingsymbol,
             price=price,
             quantity=quantity,
-            status="Placed",  # You can change the status as needed
+            status="Placed",
         )
 
         return JsonResponse({
@@ -162,11 +153,9 @@ def place_order(request):
 
     return JsonResponse({"success": False, "error": "Invalid request"}, status=400)
 
+
 def get_user_orders(request):
-    # if request.user.is_authenticated:
-    # user_id = request.user.user_id
     user_id = request.session['user_id']
-    # user = request.user  # Get the authenticated user
     orders = Order.objects.filter(user__user_id=user_id)
 
     # Format order data
@@ -179,5 +168,4 @@ def get_user_orders(request):
         }
         for order in orders
     ]
-
     return JsonResponse({"success": True, "orders": order_data})
