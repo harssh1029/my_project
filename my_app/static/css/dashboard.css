@@ -114,3 +114,229 @@ body {
 table tbody tr:hover {
   background-color: #f1f1f1;
 }
+#order-history-table tbody tr:hover {
+    background-color: #f1f1f1;
+    cursor: pointer;
+}
+#websocket-data table {
+    width: 50%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    font-size: 16px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+#websocket-data th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #f1f1f1;
+}
+#websocket-data th {
+    background-color: #007bff;
+    color: white;
+}
+#websocket-data tr:hover {
+    background-color: #f1f1f1;
+    cursor: pointer;
+}
+  #stocks-table {
+    width: 80%;
+    margin: 0 auto;
+    border-collapse: collapse;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    font-family: Arial, sans-serif;
+  }
+
+  #stocks-table th, #stocks-table td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    text-align: center;
+    font-size: 16px;
+  }
+
+  #stocks-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+
+  #stocks-table tr:hover {
+    background-color: #f1f1f1;
+    transform: scale(1.02);
+    transition: all 0.2s ease-in-out;
+  }
+
+  #stocks-table th {
+    background-color: #4CAF50;
+    color: white;
+    font-weight: bold;
+  }
+
+  #stocks-table td {
+    color: #333;
+  }
+
+  h2 {
+    font-size: 24px;
+    color: #4CAF50;
+    margin-bottom: 20px;
+  }
+
+  #websocket-data-section {
+    background: #f4f4f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  @media (max-width: 768px) {
+    #stocks-table {
+      width: 100%;
+    }
+
+    h2 {
+      font-size: 20px;
+    }
+  }
+
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    background-color: #2c3e50;
+    color: #ecf0f1;
+    position: fixed;
+    padding: 20px 10px;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+  }
+
+  /* Sidebar title */
+  .sidebar h4 {
+    margin-bottom: 30px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #ecf0f1;
+  }
+
+  /* Sidebar navigation list */
+  .sidebar .nav {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  /* Sidebar navigation items */
+  .sidebar .nav-item {
+    margin: 10px 0;
+  }
+
+  /* Sidebar navigation links */
+  .sidebar .nav-link {
+    display: block;
+    padding: 10px 15px;
+    color: #ecf0f1;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+  }
+
+  /* Active and hover effects */
+  .sidebar .nav-link.active,
+  .sidebar .nav-link:hover {
+    background-color: #3498db;
+    color: #fff;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+    transform: scale(1.05);
+  }
+
+  /* Sidebar responsiveness */
+  @media (max-width: 768px) {
+    .sidebar {
+      width: 200px;
+      padding: 10px;
+    }
+
+    .sidebar h4 {
+      font-size: 18px;
+    }
+
+    .sidebar .nav-link {
+      font-size: 14px;
+    }
+  }
+
+  #profile-section > div {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  #profile-section > div:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  }
+
+  #profile-section p {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #444;
+  }
+
+  #profile-section h2 {
+    font-family: 'Arial', sans-serif;
+    color: #444;
+  }
+
+  #profile-section strong {
+    color: #222;
+  }
+
+/* Profile Section Container */
+.profile-container {
+  display: flex;
+  padding: 2%;
+  justify-content: center;
+}
+
+/* Profile Card Styling */
+.profile-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 500px;
+  margin: auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+/* Profile Header Styling */
+.profile-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.profile-header h2 {
+  margin: 0;
+  font-size: 24px;
+  color: #333;
+}
+
+/* Divider Line */
+.profile-divider {
+  width: 100%;
+  border-top: 1px solid #ddd;
+  margin-bottom: 10px;
+}
+
+/* Profile Content Styling */
+.profile-content {
+  text-align: left;
+  width: 100%;
+}
+
+.profile-content p {
+  margin: 10px 0;
+  font-size: 16px;
+  color: #555;
+}
+

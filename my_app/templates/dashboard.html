@@ -1,48 +1,3 @@
-<!--<h2>Welcome, {{ profile.user_name }}</h2>-->
-<!--<p>User ID: {{ profile.user_id }}</p>-->
-<!--<p>Email: {{ profile.email }}</p>-->
-<!--<p>Broker: {{ profile.broker }}</p>-->
-
-<!--<h3>Historical Data Chart</h3>-->
-<!--<form id="chartFilter">-->
-<!--    <label>Symbol:</label>-->
-<!--    <input type="text" id="symbol" required>-->
-<!--    <label>From Date:</label>-->
-<!--    <input type="date" id="fromDate" required>-->
-<!--    <label>To Date:</label>-->
-<!--    <input type="date" id="toDate" required>-->
-<!--    <button type="submit">Filter</button>-->
-<!--</form>-->
-
-<!--<canvas id="chart"></canvas>-->
-
-<!--<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>-->
-<!--<script>-->
-<!--    document.getElementById('chartFilter').addEventListener('submit', async (e) => {-->
-<!--        e.preventDefault();-->
-<!--        const symbol = document.getElementById('symbol').value;-->
-<!--        const fromDate = document.getElementById('fromDate').value;-->
-<!--        const toDate = document.getElementById('toDate').value;-->
-
-<!--        const response = await fetch(`/api/historical-data/?symbol=${symbol}&from_date=${fromDate}&to_date=${toDate}`);-->
-<!--        const data = await response.json();-->
-<!--        console.log(data)-->
-<!--        const labels = data.map(item => item.date);-->
-<!--        const prices = data.map(item => item.price);-->
-<!--        console.log(labels, prices)-->
-<!--        let chartStatus = Chart.getChart("chart"); // <canvas> id-->
-<!--        if (chartStatus != undefined) {-->
-<!--          chartStatus.destroy();-->
-<!--        }-->
-<!--        new Chart(document.getElementById('chart'), {-->
-<!--            type: 'line',-->
-<!--            data: {-->
-<!--                labels,-->
-<!--                datasets: [{ label: 'Price', data: prices }]-->
-<!--            }-->
-<!--        });-->
-<!--    });-->
-<!--</script>-->
 <!DOCTYPE html>
 {% load static %}
 <html lang="en">
@@ -63,7 +18,7 @@
     <h4 class="text-center">Dashboard</h4>
     <ul class="nav flex-column">
       <li class="nav-item">
-        <a class="nav-link" href="#" id="home-tab">Home</a>
+        <a class="nav-link active" href="#" id="home-tab">Home</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="#" id="profile-tab">Profile</a>
@@ -72,10 +27,15 @@
         <a class="nav-link" href="#" id="holding-tab">Holdings</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Place Order</a>
+        <a class="nav-link" href="#" id="place-order-tab">Place Order</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#" id="websocket-data-tab">WebSocket Data</a>
       </li>
     </ul>
   </div>
+
+
 
   <div class="content">
       <nav class="navbar navbar-expand-lg navbar-light">
@@ -91,17 +51,64 @@
         </div>
       </nav>
     <!-- Profile Section -->
-    <div id="profile-section" style="display: none; padding: 2%;">
-      <div style="display: flex; align-items: center; gap: 20px;">
-        <div>
-          <h2 style="margin: 0;">Welcome, {{ profile.user_name }}</h2>
-          <p style="margin: 5px 0;">User ID: <strong>{{ profile.user_id }}</strong></p>
-          <p style="margin: 5px 0;">Email: <strong>{{ profile.email }}</strong></p>
-          <p style="margin: 5px 0;">Broker: <strong>{{ profile.broker }}</strong></p>
-          <p style="margin: 5px 0;">User Type: <strong>Individual</strong></p>
+    <div id="profile-section" style="display: none;" class="profile-container">
+      <div class="profile-card">
+        <div class="profile-header">
+          <h2>Profile Information</h2>
+        </div>
+        <div class="profile-divider"></div>
+        <div class="profile-content">
+          <p>User name: <strong>{{ profile.user_name }}</strong></p>
+          <p>User ID: <strong>{{ profile.user_id }}</strong></p>
+          <p>Email: <strong>{{ profile.email }}</strong></p>
+          <p>Mobile: <strong>{{ profile.mobile }}</strong></p>
+          <p>Date of Birth: <strong>{{ profile.date_of_birth }}</strong></p>
+          <p>Broker: <strong>{{ profile.broker }}</strong></p>
+          <p>User Type: <strong>Individual</strong></p>
         </div>
       </div>
     </div>
+
+
+
+
+    <!-- Place Order Section -->
+    <div id="place-order-section" style="display: none;padding: 2%; font-family: Arial, sans-serif;">
+        <h2 style="text-align: center; color: #333;">Place Order</h2>
+
+        <!-- Form for order submission -->
+        <form id="place-order-form" style="display: flex; flex-direction: column; gap: 20px; max-width: 400px; margin: 0 auto;">
+            {% csrf_token %}
+            <input type="text" id="tradingsymbol" placeholder="Trading Symbol" required style="padding: 10px; border-radius: 5px; border: 1px solid #ddd; font-size: 14px;" />
+            <input type="number" id="price" placeholder="Price" required style="padding: 10px; border-radius: 5px; border: 1px solid #ddd; font-size: 14px;" />
+            <input type="number" id="quantity" placeholder="Quantity" required style="padding: 10px; border-radius: 5px; border: 1px solid #ddd; font-size: 14px;" />
+            <button type="submit" class="btn-submit" style="padding: 12px; background-color: #007bff; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer;">
+                Place Order
+            </button>
+        </form>
+
+        <!-- Success message alert -->
+        <div id="order-success-message" style="display: none; margin-top: 20px; color: green; background-color: #d4edda; padding: 10px; border-radius: 5px; text-align: center;">
+            Order placed successfully!
+        </div>
+
+        <!-- Order History Table -->
+        <h3 style="text-align: center; margin-top: 40px; color: #333;">Order History</h3>
+        <table id="order-history-table" border="0" style="width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 16px; text-align: left; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border-radius: 8px; overflow: hidden;">
+          <thead style="background: linear-gradient(to right, #007bff, #0056b3); color: white; font-weight: bold;">
+              <tr>
+                  <th style="padding: 14px; text-align: left; text-transform: uppercase; letter-spacing: 1px;">Trading Symbol</th>
+                  <th style="padding: 14px; text-align: left; text-transform: uppercase; letter-spacing: 1px;">Price</th>
+                  <th style="padding: 14px; text-align: left; text-transform: uppercase; letter-spacing: 1px;">Quantity</th>
+                  <th style="padding: 14px; text-align: left; text-transform: uppercase; letter-spacing: 1px;">Status</th>
+              </tr>
+          </thead>
+          <tbody id="order-history-body">
+              <!-- Orders will appear here -->
+          </tbody>
+      </table>
+    </div>
+
 
     <!-- Holding data -->
     <div id="holding-section" style="display: none; padding: 2%;">
@@ -179,12 +186,63 @@
         </div>
       </div>
     </div>
-  </div>
 
+    <!-- Websocket Connection Data -->
+    <div id="websocket-data-section" style="display: none; padding: 20px;">
+      <h2 style="text-align: center;">Live Stock Price Feed</h2>
+      <table id="stocks-table" style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+        <thead>
+          <tr style="background-color: #4CAF50; color: white; text-align: left;">
+            <th style="padding: 10px;">Stock Symbol</th>
+            <th style="padding: 10px;">Price</th>
+          </tr>
+        </thead>
+        <tbody id="stocks-list">
+          <tr id="row-AAPL">
+            <td>AAPL</td>
+            <td id="price-AAPL">$150.00</td>
+          </tr>
+          <tr id="row-GOOGL">
+            <td>GOOGL</td>
+            <td id="price-GOOGL">$2750.00</td>
+          </tr>
+          <tr id="row-AMZN">
+            <td>AMZN</td>
+            <td id="price-AMZN">$3500.00</td>
+          </tr>
+          <tr id="row-TSLA">
+            <td>TSLA</td>
+            <td id="price-TSLA">$1000.00</td>
+          </tr>
+          <tr id="row-MSFT">
+            <td>MSFT</td>
+            <td id="price-MSFT">$300.00</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </body>
 </html>
 <script>
     // Select all section divs and links
+    document.addEventListener("DOMContentLoaded", function () {
+        // Select all navigation links
+        const navLinks = document.querySelectorAll(".nav-link");
+
+        // Add a click event listener to each link
+        navLinks.forEach(link => {
+          link.addEventListener("click", function () {
+            // Remove 'active' class from all links
+            navLinks.forEach(nav => nav.classList.remove("active"));
+
+            // Add 'active' class to the clicked link
+            this.classList.add("active");
+          });
+        });
+      });
+
+
     let chart = new Chart(document.getElementById('chart'), {
         type: 'line',
         data: {
@@ -240,23 +298,47 @@
         chart.update();
     });
 
-    // Toggle between Home and Profile sections
+    // Toggle between sections
     document.getElementById('home-tab').addEventListener('click', () => {
         document.getElementById('home-section').style.display = 'block';
+        document.getElementById('place-order-section').style.display = 'none';
         document.getElementById('holding-section').style.display = 'none';
         document.getElementById('profile-section').style.display = 'none';
+        document.getElementById('websocket-data-section').style.display = 'none';
     });
 
     document.getElementById('profile-tab').addEventListener('click', () => {
         document.getElementById('home-section').style.display = 'none';
+        document.getElementById('place-order-section').style.display = 'none';
         document.getElementById('holding-section').style.display = 'none';
         document.getElementById('profile-section').style.display = 'block';
+        document.getElementById('websocket-data-section').style.display = 'none';
     });
 
     document.getElementById('holding-tab').addEventListener('click', () => {
         document.getElementById('home-section').style.display = 'none';
+        document.getElementById('place-order-section').style.display = 'none';
         document.getElementById('holding-section').style.display = 'block';
         document.getElementById('profile-section').style.display = 'none';
+        document.getElementById('websocket-data-section').style.display = 'none';
+    });
+
+    document.getElementById('place-order-tab').addEventListener('click', () => {
+        document.getElementById('home-section').style.display = 'none';
+        document.getElementById('place-order-section').style.display = 'block';
+        document.getElementById('holding-section').style.display = 'none';
+        document.getElementById('profile-section').style.display = 'none';
+        document.getElementById('websocket-data-section').style.display = 'none';
+        get_orders();
+    });
+
+    document.getElementById('websocket-data-tab').addEventListener('click', () => {
+        document.getElementById('home-section').style.display = 'none';
+        document.getElementById('websocket-data-section').style.display = 'block';
+        document.getElementById('place-order-section').style.display = 'none';
+        document.getElementById('holding-section').style.display = 'none';
+        document.getElementById('profile-section').style.display = 'none';
+        liveData();
     });
 
     const holdings_data = {{ holding_data|safe }};
@@ -283,6 +365,162 @@
     } else {
       console.error('Total Profit/Loss is not a valid number');
       document.getElementById("totalProfitLoss").textContent = 'Invalid Data';
+    }
+
+    // Array to store placed orders
+    function showOrderSuccessMessage() {
+        const successMessage = document.getElementById('order-success-message');
+        successMessage.style.display = 'block';
+
+        // Hide message after 5 seconds
+        setTimeout(() => {
+            successMessage.style.display = 'none';
+        }, 5000);
+    }
+
+    document.getElementById('place-order-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        // Get the values from the form
+        const tradingsymbol = document.getElementById('tradingsymbol').value;
+        const price = document.getElementById('price').value;
+        const quantity = document.getElementById('quantity').value;
+
+        // Add the order to the order history table (frontend)
+        const orderHistoryBody = document.getElementById('order-history-body');
+        const newRow = document.createElement('tr');
+        newRow.innerHTML = `
+            <td style="padding: 12px; text-align: left;">${tradingsymbol}</td>
+            <td style="padding: 12px; text-align: left;">${price}</td>
+            <td style="padding: 12px; text-align: left;">${quantity}</td>
+            <td style="padding: 12px; text-align: left;">Placed</td>
+        `;
+        orderHistoryBody.appendChild(newRow);
+
+        // Show success message
+        showOrderSuccessMessage();
+
+        // Send the data to the backend
+        fetch('/place-order/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,  // CSRF token for security
+            },
+            body: JSON.stringify({
+                tradingsymbol: tradingsymbol,
+                price: price,
+                quantity: quantity,
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Optionally update the UI if the backend successfully stores the order
+                console.log('Order placed successfully');
+            } else {
+                console.error('Failed to place order');
+            }
+        })
+        .catch(error => console.error('Error placing order:', error));
+
+        // Optionally clear the form
+        document.getElementById('place-order-form').reset();
+    });
+
+    function get_orders() {
+    // Fetch the CSRF token from the form (if the CSRF token is included in the form)
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]')?.value;
+
+        if (!csrfToken) {
+            console.error("CSRF token not found!");
+            return;
+        }
+
+        // Fetch the user's orders when the page loads
+        fetch('/get-user-orders/', {
+            method: 'GET',
+            headers: {
+                'X-CSRFToken': csrfToken,  // CSRF token for security
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                const orders = data.orders;
+                const orderHistoryBody = document.getElementById('order-history-body');
+
+                // Clear the table body before adding the orders
+                orderHistoryBody.innerHTML = '';
+
+                // Add each order to the table
+                orders.forEach(order => {
+                    const newRow = document.createElement('tr');
+                    newRow.innerHTML = `
+                        <td style="padding: 12px; text-align: left; border-bottom: 1px solid #f1f1f1;">${order.tradingsymbol}</td>
+                        <td style="padding: 12px; text-align: left; border-bottom: 1px solid #f1f1f1;">₹${order.price}</td>
+                        <td style="padding: 12px; text-align: left; border-bottom: 1px solid #f1f1f1;">${order.quantity}</td>
+                        <td style="padding: 12px; text-align: left; border-bottom: 1px solid #f1f1f1;">${order.status}</td>
+    <!--                    <td style="padding: 12px; text-align: left;">${order.status}</td>-->
+                    `;
+                    orderHistoryBody.appendChild(newRow);
+                });
+            } else {
+                console.error('Failed to fetch orders');
+            }
+        })
+        .catch(error => console.error('Error fetching orders:', error));
+    }
+
+    function liveData() {
+      const stockList = document.getElementById("stocks-list");
+      const socket = new WebSocket('ws://127.0.0.1:8001/ws/stocks/');
+
+      // When WebSocket is opened
+      socket.onopen = function(e) {
+          console.log("WebSocket connection established.");
+      };
+
+      // When receiving data from the WebSocket
+      socket.onmessage = function(e) {
+          const data = JSON.parse(e.data);
+
+          // Check if 'stocks' is present and is an array
+          if (data && Array.isArray(data.stocks)) {
+              updateStockPrices(data.stocks);
+          } else {
+              console.error("Invalid data received:", data);
+          }
+      };
+
+
+
+      // When WebSocket is closed
+      socket.onclose = function(e) {
+          console.log("WebSocket connection closed.");
+      };
+
+      // Error handling
+      socket.onerror = function(e) {
+          console.error("WebSocket error:", e);
+      };
+
+
+    }
+    // Function to update the stock prices on the frontend
+    function updateStockPrices(stockData) {
+        if (!stockData || !Array.isArray(stockData)) {
+            console.error('Invalid stock data:', stockData);
+            return;
+        }
+
+        // Iterate over the stocks array
+        stockData.forEach(stock => {
+            const stockElement = document.getElementById(`price-${stock.symbol}`);
+            if (stockElement) {
+                stockElement.textContent = `$${stock.price.toFixed(2)}`;
+            }
+        });
     }
 
 
