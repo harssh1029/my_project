@@ -245,7 +245,6 @@
 </body>
 </html>
 <script>
-    // Select all section divs and links
     document.addEventListener("DOMContentLoaded", function () {
         // Select all navigation links
         const navLinks = document.querySelectorAll(".nav-link");
@@ -358,14 +357,11 @@
         document.getElementById('place-order-section').style.display = 'none';
         document.getElementById('holding-section').style.display = 'none';
         document.getElementById('profile-section').style.display = 'none';
-<!--        liveData();-->
     });
 
     const holdings_data = {{ holding_data|safe }};
     console.log(holdings_data); // Check the data in browser console
 
-    // Function to calculate total Profit/Loss
-    // Function to calculate total Profit/Loss
     function calculateTotalPnL(holdings) {
       let totalPnL = 0;
       holdings.forEach(holding => {
@@ -416,11 +412,8 @@
             <td style="padding: 12px; text-align: left;">Placed</td>
         `;
         orderHistoryBody.appendChild(newRow);
-
-        // Show success message
         showOrderSuccessMessage();
 
-        // Send the data to the backend
         fetch('/place-order/', {
             method: 'POST',
             headers: {
@@ -443,21 +436,16 @@
             }
         })
         .catch(error => console.error('Error placing order:', error));
-
-        // Optionally clear the form
         document.getElementById('place-order-form').reset();
     });
 
     function get_orders() {
-    // Fetch the CSRF token from the form (if the CSRF token is included in the form)
         const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]')?.value;
 
         if (!csrfToken) {
             console.error("CSRF token not found!");
             return;
         }
-
-        // Fetch the user's orders when the page loads
         fetch('/get-user-orders/', {
             method: 'GET',
             headers: {
@@ -496,12 +484,10 @@
       const stockList = document.getElementById("stocks-list");
       const socket = new WebSocket('ws://54.196.221.193/ws/stocks/');
 
-      // When WebSocket is opened
       socket.onopen = function(e) {
           console.log("WebSocket connection established.");
       };
 
-      // When receiving data from the WebSocket
       socket.onmessage = function(e) {
           const data = JSON.parse(e.data);
 
@@ -513,28 +499,22 @@
           }
       };
 
-
-
-      // When WebSocket is closed
       socket.onclose = function(e) {
           console.log("WebSocket connection closed.");
       };
 
-      // Error handling
       socket.onerror = function(e) {
           console.error("WebSocket error:", e);
       };
 
 
     }
-    // Function to update the stock prices on the frontend
     function updateStockPrices(stockData) {
         if (!stockData || !Array.isArray(stockData)) {
             console.error('Invalid stock data:', stockData);
             return;
         }
 
-        // Iterate over the stocks array
         stockData.forEach(stock => {
             const stockElement = document.getElementById(`price-${stock.symbol}`);
             if (stockElement) {
