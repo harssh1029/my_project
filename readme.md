@@ -32,7 +32,7 @@ The tool is deployed on **AWS EC2**: [http://54.196.221.193/](http://54.196.221.
   - **Date** on the X-axis
 - Includes a date filter and dropdown with options:
   - **NIFT 50**
-  - **BANK NIFT**
+  - **BANK NIFTY**
 
 #### 👤 **Profile Page**
 - User information displayed:
