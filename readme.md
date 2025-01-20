@@ -77,5 +77,9 @@ python manage.py migrate
 # Start the Django app:
 python manage.py runserver
 
+# First time setup
+Run this command - https://localhost:8000/load-historical-data/
+#This will add the historical table data to your db(use your localhost server and your port)
+
 # Start WebSocket:
 daphne my_project.asgi:application --port 8001
