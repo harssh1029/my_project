@@ -31,7 +31,7 @@ The tool is deployed on **AWS EC2**: [http://54.196.221.193/](http://54.196.221.
   - **Price** on the Y-axis
   - **Date** on the X-axis
 - Includes a date filter and dropdown with options:
-  - **NIFT 50**
+  - **NIFTY 50**
   - **BANK NIFTY**
 
 #### 👤 **Profile Page**
